@@ -10,6 +10,8 @@ type Product = {
   image: string;
 };
 
+const USD_TO_INR_RATE = 83; // Approximate exchange rate: 1 USD = 83 INR
+
 const Shop = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -65,6 +67,12 @@ const Shop = () => {
       setIsLoading(false);
     }, 800);
   }, []);
+
+  // Convert USD price to INR
+  const convertToINR = (usdPrice: number): string => {
+    const inrPrice = usdPrice * USD_TO_INR_RATE;
+    return `₹${inrPrice.toFixed(0)}`; // Round to nearest integer for cleaner display
+  };
 
   const filteredProducts = selectedCategory === 'all' 
     ? products 
@@ -129,7 +137,7 @@ const Shop = () => {
                 </div>
                 <div className="p-4">
                   <h3 className="font-medium text-lg mb-1">{product.name}</h3>
-                  <p className="text-mochashi-green font-medium">${product.price.toFixed(2)}</p>
+                  <p className="text-mochashi-green font-medium">{convertToINR(product.price)}</p>
                   <button className="mt-4 w-full flex items-center justify-center gap-2 bg-mochashi-cream text-mochashi-darkgray py-2 rounded hover:bg-mochashi-green hover:text-white transition-colors">
                     <ShoppingBasket size={16} />
                     <span>Add to Basket</span>
