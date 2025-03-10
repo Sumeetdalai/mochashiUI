@@ -1,6 +1,8 @@
 
 import { useState, useEffect } from 'react';
 import { ChevronDown, ShoppingBasket } from 'lucide-react';
+import { useBasket } from '@/contexts/BasketContext';
+import { toast } from '@/hooks/use-toast';
 
 type Product = {
   id: number;
@@ -16,6 +18,7 @@ const Shop = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const { addItem } = useBasket();
 
   useEffect(() => {
     // Simulate fetching products
@@ -78,6 +81,10 @@ const Shop = () => {
     ? products 
     : products.filter(product => product.category === selectedCategory);
 
+  const handleAddToBasket = (product: Product) => {
+    addItem(product);
+  };
+
   return (
     <div className="min-h-screen pt-24 pb-16 px-6 bg-white">
       <div className="max-w-7xl mx-auto">
@@ -138,7 +145,10 @@ const Shop = () => {
                 <div className="p-4">
                   <h3 className="font-medium text-lg mb-1">{product.name}</h3>
                   <p className="text-mochashi-green font-medium">{convertToINR(product.price)}</p>
-                  <button className="mt-4 w-full flex items-center justify-center gap-2 bg-mochashi-cream text-mochashi-darkgray py-2 rounded hover:bg-mochashi-green hover:text-white transition-colors">
+                  <button 
+                    onClick={() => handleAddToBasket(product)}
+                    className="mt-4 w-full flex items-center justify-center gap-2 bg-mochashi-cream text-mochashi-darkgray py-2 rounded hover:bg-mochashi-green hover:text-white transition-colors"
+                  >
                     <ShoppingBasket size={16} />
                     <span>Add to Basket</span>
                   </button>

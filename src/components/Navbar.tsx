@@ -2,10 +2,11 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ShoppingBasket } from 'lucide-react';
+import { useBasket } from '@/contexts/BasketContext';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [cartItems, setCartItems] = useState(3); // Placeholder for cart items count
+  const { totalItems } = useBasket();
   const location = useLocation();
 
   useEffect(() => {
@@ -50,7 +51,7 @@ const Navbar = () => {
             className="flex items-center gap-2 bg-mochashi-green text-white px-4 py-2 rounded transition-all hover:bg-mochashi-green/90"
           >
             <ShoppingBasket size={18} />
-            <span>Basket ({cartItems})</span>
+            <span>Basket ({totalItems})</span>
           </Link>
         </nav>
         
