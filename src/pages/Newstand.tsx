@@ -23,7 +23,7 @@ const Newstand = () => {
         {
           id: 1,
           title: 'Seasonal Eating: Why It Matters for Your Health and the Planet',
-          excerpt: 'Discover the benefits of eating produce that's in season and how it can enhance your meals.',
+          excerpt: "Discover the benefits of eating produce that's in season and how it can enhance your meals.",
           date: 'June 12, 2023',
           readTime: '5 min read',
           image: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80',
@@ -41,7 +41,7 @@ const Newstand = () => {
         {
           id: 3,
           title: 'Simple Summer Recipes Using Our Fresh Produce',
-          excerpt: 'Easy and delicious recipes to make the most of summer's bounty from our organic farm.',
+          excerpt: "Easy and delicious recipes to make the most of summer's bounty from our organic farm.",
           date: 'May 15, 2023',
           readTime: '4 min read',
           image: 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=800&q=80',
