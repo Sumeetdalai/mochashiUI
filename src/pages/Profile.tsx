@@ -1,10 +1,31 @@
 
 import { useEffect, useState } from 'react';
 import { User, Package, Clock, LogOut } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
+
+const USD_TO_INR_RATE = 83; // Same exchange rate as in Shop.tsx
+
+// Convert USD price to INR
+const convertToINR = (usdPrice: string): string => {
+  const numericValue = parseFloat(usdPrice.replace('$', ''));
+  const inrPrice = numericValue * USD_TO_INR_RATE;
+  return `₹${inrPrice.toFixed(0)}`; // Round to nearest integer for cleaner display
+};
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('profile');
   const [isLoading, setIsLoading] = useState(true);
+  
+  // User form state
+  const [formData, setFormData] = useState({
+    firstName: 'Jane',
+    lastName: 'Doe',
+    email: 'jane.doe@example.com',
+    phone: '(555) 123-4567',
+    address: '123 Main Street',
+    city: 'San Francisco',
+    zipCode: '94105'
+  });
 
   useEffect(() => {
     // Simulate loading user data
@@ -12,6 +33,22 @@ const Profile = () => {
       setIsLoading(false);
     }, 800);
   }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: value
+    }));
+  };
+
+  const handleSaveChanges = () => {
+    // In a real app, this would call an API to save the user data
+    toast({
+      title: "Changes saved",
+      description: "Your profile information has been updated successfully."
+    });
+  };
 
   return (
     <div className="min-h-screen pt-24 pb-16 px-6 bg-white">
@@ -74,7 +111,9 @@ const Profile = () => {
                           </label>
                           <input 
                             type="text" 
-                            defaultValue="Jane" 
+                            id="firstName"
+                            value={formData.firstName}
+                            onChange={handleInputChange}
                             className="w-full p-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-mochashi-green/50"
                           />
                         </div>
@@ -84,7 +123,9 @@ const Profile = () => {
                           </label>
                           <input 
                             type="text" 
-                            defaultValue="Doe" 
+                            id="lastName"
+                            value={formData.lastName}
+                            onChange={handleInputChange}
                             className="w-full p-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-mochashi-green/50"
                           />
                         </div>
@@ -94,7 +135,9 @@ const Profile = () => {
                           </label>
                           <input 
                             type="email" 
-                            defaultValue="jane.doe@example.com" 
+                            id="email"
+                            value={formData.email}
+                            onChange={handleInputChange}
                             className="w-full p-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-mochashi-green/50"
                           />
                         </div>
@@ -104,7 +147,9 @@ const Profile = () => {
                           </label>
                           <input 
                             type="text" 
-                            defaultValue="(555) 123-4567" 
+                            id="phone"
+                            value={formData.phone}
+                            onChange={handleInputChange}
                             className="w-full p-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-mochashi-green/50"
                           />
                         </div>
@@ -119,7 +164,9 @@ const Profile = () => {
                             </label>
                             <input 
                               type="text" 
-                              defaultValue="123 Main Street" 
+                              id="address"
+                              value={formData.address}
+                              onChange={handleInputChange}
                               className="w-full p-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-mochashi-green/50"
                             />
                           </div>
@@ -129,7 +176,9 @@ const Profile = () => {
                             </label>
                             <input 
                               type="text" 
-                              defaultValue="San Francisco" 
+                              id="city"
+                              value={formData.city}
+                              onChange={handleInputChange}
                               className="w-full p-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-mochashi-green/50"
                             />
                           </div>
@@ -139,14 +188,19 @@ const Profile = () => {
                             </label>
                             <input 
                               type="text" 
-                              defaultValue="94105" 
+                              id="zipCode"
+                              value={formData.zipCode}
+                              onChange={handleInputChange}
                               className="w-full p-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-mochashi-green/50"
                             />
                           </div>
                         </div>
                       </div>
 
-                      <button className="mt-8 bg-mochashi-green text-white py-2 px-6 rounded-md hover:bg-mochashi-green/90 transition-colors">
+                      <button 
+                        className="mt-8 bg-mochashi-green text-white py-2 px-6 rounded-md hover:bg-mochashi-green/90 transition-colors"
+                        onClick={handleSaveChanges}
+                      >
                         Save Changes
                       </button>
                     </div>
@@ -191,7 +245,7 @@ const Profile = () => {
                         </p>
                         <div className="flex items-center justify-between text-sm text-mochashi-gray mb-6">
                           <span>Next delivery: June 23, 2023</span>
-                          <span>$34.99/week</span>
+                          <span>{convertToINR("$34.99")}/week</span>
                         </div>
                         <div className="flex gap-3">
                           <button className="text-mochashi-green border border-mochashi-green py-2 px-4 rounded-md hover:bg-mochashi-green hover:text-white transition-colors">
@@ -260,7 +314,7 @@ const OrderItem = ({
         </div>
         <div className="mt-2 md:mt-0 flex flex-col md:flex-row md:items-center gap-2 md:gap-6">
           <span className="text-sm px-2 py-1 bg-green-100 text-green-800 rounded w-fit">{status}</span>
-          <span className="font-medium">{total}</span>
+          <span className="font-medium">{convertToINR(total)}</span>
           <a href="#" className="text-mochashi-green text-sm hover:underline">View Details</a>
         </div>
       </div>
@@ -269,3 +323,4 @@ const OrderItem = ({
 };
 
 export default Profile;
+
